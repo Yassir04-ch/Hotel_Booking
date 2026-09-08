@@ -9,14 +9,18 @@ import Exception.InvalidCredentialsException;
 import java.util.UUID;
 
 public class AuthService {
-    private InMemoryUserRepository repo;
-    private User userLogin = null;
+    private final InMemoryUserRepository repo;
+    private static User userLogin = null;
 
-    public AuthService(InMemoryUserRepository repo){
-        this.repo = repo;
+    public InMemoryUserRepository getRepo() {
+        return repo;
     }
 
-    public User Register(String fullName , String email, String phone , String password)  {
+    public AuthService(){
+        this.repo = new InMemoryUserRepository();
+    }
+
+    public  User Register(String fullName , String email, String phone , String password)  {
       if(!ValidationUtils.isValidName(fullName)){
           throw new IllegalArgumentException("Name invalide");
       }
@@ -60,7 +64,7 @@ public class AuthService {
         this.userLogin = user;
     }
 
-    public boolean isLogin(){
+    public static boolean isLogin(){
         return userLogin != null;
     }
 
