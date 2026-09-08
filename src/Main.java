@@ -77,10 +77,51 @@ public class Main {
         }
     }
 
+    public static void menuPrincipale(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1. Search available rooms");
+        System.out.println("2. View all rooms");
+        System.out.println("3. Create reservation");
+        System.out.println("4. My reservations");
+        System.out.println("5. Reservation details");
+        System.out.println("6. Update reservation");
+        System.out.println("7. Cancel reservation");
+        System.out.println("8. Update profile");
+        System.out.println("9. Change password");
+        System.out.println("10. Logout");
+        System.out.println("0. Exit");
+
+        System.out.println("Entrer une Choix");
+        int choix = scanner.nextInt();
+        switch (choix) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            default:
+                break;
+        }
+    }
+
     static void main(String[] args) {
         service = new AuthService();
-        if (!service.isLogin()) {
-            while (true) {
+            while(true) {
                 int choix = menuAuth();
                 switch (choix) {
                     case 1:
@@ -97,6 +138,7 @@ public class Main {
                         System.out.println("Login");
                         menuLogin();
                         System.out.println("Welcome ");
+                        menuPrincipale();
                         break;
                     default:
                         System.out.println("Good Day");
@@ -104,8 +146,4 @@ public class Main {
                 }
             }
         }
-        else{
-
-        }
-    }
 }

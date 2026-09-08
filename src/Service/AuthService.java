@@ -53,23 +53,23 @@ public class AuthService {
         if(!user.getPassword().equals(password)){
             throw new InvalidCredentialsException("Password incorect");
         }
-        this.userLogin = user;
+        userLogin = user;
         return user;
     }
 
     public User getUserLogin(){
-        return this.userLogin;
+        return userLogin;
     }
     public void setUserLogin(User user){
-        this.userLogin = user;
+        userLogin = user;
     }
 
-    public static boolean isLogin(){
+    public  boolean isLogin(){
         return userLogin != null;
     }
 
     public void logOut(){
-        this.userLogin = null;
+        userLogin = null;
     }
 
 }
