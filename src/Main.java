@@ -9,6 +9,7 @@ import  Exception.EmailAlreadyExistsException;
 import  Exception.InvalidCredentialsException;
 import Service.RoomService;
 import utils.InputUtils;
+import utils.ValidationUtils;
 
 public class Main {
 
@@ -86,7 +87,7 @@ public class Main {
 
                 System.out.println("Email : ");
                 String email = scanner.nextLine();
-                System.out.println("Password : ");
+                System.out.println("Mode passe : ");
                 String password = scanner.nextLine();
 
                 User user = Authservice.Register(fullName, email, phone, password);
@@ -104,10 +105,67 @@ public class Main {
         }
     }
 
+    public static void menuProfile(){
+        User user = Authservice.getUserLogin();
+        boolean ret = true;
+        while (ret) {
 
+            System.out.println("Nom : " + user.getFullName());
+            System.out.println("Phone : " + user.getPhone());
+            System.out.println("Email : " + user.getEmail());
+            System.out.println("Password : " + user.getPassword());
+            System.out.println("1-Modifier Profile");
+            System.out.println("2-Modifier password");
+            System.out.println("3-Return");
+            int choix = InputUtils.readInt("Entrer votre choix");
+            switch (choix) {
+                case 1:
+                    menuUpdateProfile();
+                    break;
+                case 2:
+                    updatePassword();
+                    break;
+                case 3:
+                    ret = false;
+                    break;
+                default:
+                    System.out.println("choix invalide");
+                    break;
+            }
+        }
+    }
+
+    public static void menuUpdateProfile(){
+        try {
+            System.out.println("==== Modifier Profile ====");
+            String name = InputUtils.readString("Entrer  nom : ");
+            String email = InputUtils.readString("Entrer  email : ");
+            String phone = InputUtils.readString("Entrer phone  : ");
+            Authservice.updateProfile(name, email, phone);
+            System.out.println("Votre profile et modifier");
+        }catch (IllegalArgumentException e){
+            System.out.println("Erreur : " +e.getMessage());
+        }catch (EmailAlreadyExistsException e){
+            System.out.println("Erreur : "+ e.getMessage());
+        }
+    }
+
+    public static void updatePassword(){
+      try{
+          String oldPassword = InputUtils.readString("Entrer votre Mode passe : ");
+          String password = InputUtils.readString("Entrer neuveaux Mode passe : ");
+          Authservice.UpdatePassword(password,oldPassword);
+
+      }catch (IllegalArgumentException e){
+         System.out.println("Erreur : " + e.getMessage());
+      }catch (InvalidCredentialsException e){
+          System.out.println("Erreur : " + e.getMessage());
+      }
+    }
 
     public static void menuPrincipale(){
         Scanner scanner = new Scanner(System.in);
+        while (true){
         System.out.println("1. Search available rooms");
         System.out.println("2. View all rooms");
         System.out.println("3. Create reservation");
@@ -145,20 +203,18 @@ public class Main {
             case 9:
                 break;
             case 10:
-                User user = Authservice.getUserLogin();
-                System.out.println("Nom : " + user.getFullName()  );
-                System.out.println("Phone : " + user.getPhone()  );
-                System.out.println("Email : " + user.getEmail()  );
-                System.out.println("Password : " + user.getPassword()  );
+                menuProfile();
                 break;
             case 11:
                 Authservice.logOut();
                 System.out.println("Logout");
-                break;
+                return;
             default:
                 break;
         }
     }
+    }
+
 
     static void main(String[] args) {
         Authservice = new AuthService();
@@ -169,12 +225,6 @@ public class Main {
                     case 1:
                         System.out.println("Register");
                         menuRegister();
-                        List<User> users = Authservice.getRepo().findAll();
-                        for(User user : users){
-                            System.out.println("Nom : " + user.getFullName());
-                            System.out.println("Email : " + user.getEmail());
-                            System.out.println("Phone : " + user.getPhone());
-                        }
                         break;
                     case 2:
                         System.out.println("Login");

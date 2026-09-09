@@ -72,7 +72,38 @@ public class AuthService {
         userLogin = null;
     }
 
+    public void updateProfile(String fullName , String email , String phone){
+        User user = this.getUserLogin();
 
+        if(!ValidationUtils.isValidName(fullName)){
+            throw new IllegalArgumentException("Name invalide");
+        }
+        if(!ValidationUtils.isValidEmail(email)){
+            throw new IllegalArgumentException("Email invalide");
+        }
+        if (!ValidationUtils.isValidPhone(phone)){
+            throw new IllegalArgumentException("Phone invalide");
+        }
+        if(repo.existsByEmail(email) && !user.getEmail().equals(email)){
+            throw new EmailAlreadyExistsException("Email déja exist");
+        }
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setPhone(phone);
+        repo.update(user);
+    }
+
+    public void UpdatePassword(String password,String oldPassword){
+        User user = this.getUserLogin();
+        if(!ValidationUtils.isValidPassword(password)){
+            throw new IllegalArgumentException("Password invalide");
+        }
+        if(!user.getPassword().equals(oldPassword)){
+            throw new InvalidCredentialsException("Password incorect");
+        }
+        user.setPassword(password);
+        repo.update(user);
+    }
 
 
 }

@@ -53,5 +53,9 @@ public class InMemoryUserRepository implements UserRepository {
         return result;
     }
 
+    @Override
+    public void update(User user){
+        this.users.put(user.getId() , user);
+    }
 
 }
