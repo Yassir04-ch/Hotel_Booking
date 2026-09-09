@@ -12,12 +12,12 @@ public class AuthService {
     private final InMemoryUserRepository repo;
     private static User userLogin = null;
 
-    public InMemoryUserRepository getRepo() {
-        return repo;
-    }
-
     public AuthService(){
         this.repo = new InMemoryUserRepository();
+    }
+
+    public InMemoryUserRepository getRepo() {
+        return repo;
     }
 
     public  User Register(String fullName , String email, String phone , String password)  {
@@ -71,5 +71,8 @@ public class AuthService {
     public void logOut(){
         userLogin = null;
     }
+
+
+
 
 }

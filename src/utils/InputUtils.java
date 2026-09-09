@@ -23,7 +23,7 @@ public class InputUtils {
 
         while (true) {
 
-            System.out.print(message);
+            System.out.println(message);
 
             Scanner scanner = new Scanner(System.in);
 
@@ -35,7 +35,7 @@ public class InputUtils {
             } catch (NumberFormatException e) {
 
                 System.out.println(
-                        "Please enter a valid number."
+                        "Entrer une nombre."
                 );
             }
         }

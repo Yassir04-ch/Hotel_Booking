@@ -1,25 +1,27 @@
+import Model.Room;
 import Model.User;
 import Service.AuthService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 import  Exception.EmailAlreadyExistsException;
 import  Exception.InvalidCredentialsException;
+import Service.RoomService;
+import utils.InputUtils;
 
 public class Main {
 
-    private static AuthService service;
+    private static AuthService Authservice;
+    private static RoomService RoomService;
 
     public static int menuAuth() {
         System.out.println(" ===== Menu ===== ");
         System.out.println("1-Register");
         System.out.println("2-Login");
         System.out.println("3-Exite");
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Entrer Votre Choix : ");
-
-        return scanner.nextInt();
-
+        int choix = InputUtils.readInt("Entrer Votre Choix : ");
+        return choix;
     }
 
     public static void menuLogin() {
@@ -30,7 +32,7 @@ public class Main {
                 String email = scanner.nextLine();
                 System.out.println("Password : ");
                 String password = scanner.nextLine();
-                User user = service.Login(email, password);
+                User user = Authservice.Login(email, password);
                 return;
             } catch (IllegalArgumentException e) {
                 System.out.println("Erreur : " + e.getMessage());
@@ -43,6 +45,31 @@ public class Main {
 
             }
         }
+    }
+
+    public static void saveRoom(){
+        Room room1 =  new Room( "101", "Single", 1, new BigDecimal("500.00"), "AVAILABLE");
+        Room room2 =  new Room( "303", "Double", 2, new BigDecimal("800.00"), "OCCUPIED");
+        RoomService.getRepo().save(room1);
+        RoomService.getRepo().save(room2);
+    }
+
+    public static void afficherRooms(){
+        List<Room> rooms = RoomService.getAllRooms();
+        if (rooms.isEmpty()){
+            System.out.println("Aucune chambre disponible.");
+            return;
+        }
+        for(Room room : rooms){
+            System.out.println("=======================");
+            System.out.println("roomNumber : " + room.getRoomNumber());
+            System.out.println("capacity : " + room.getCapacity());
+            System.out.println("price : " + room.getPrice());
+            System.out.println("type : " + room.getType());
+            System.out.println("status : " + room.getStatus());
+            System.out.println("=======================");
+        }
+
     }
 
     public static void menuRegister() {
@@ -62,7 +89,7 @@ public class Main {
                 System.out.println("Password : ");
                 String password = scanner.nextLine();
 
-                User user = service.Register(fullName, email, phone, password);
+                User user = Authservice.Register(fullName, email, phone, password);
 
                 System.out.println("Register réussi !");
                 return;
@@ -77,6 +104,8 @@ public class Main {
         }
     }
 
+
+
     public static void menuPrincipale(){
         Scanner scanner = new Scanner(System.in);
         System.out.println("1. Search available rooms");
@@ -88,7 +117,8 @@ public class Main {
         System.out.println("7. Cancel reservation");
         System.out.println("8. Update profile");
         System.out.println("9. Change password");
-        System.out.println("10. Logout");
+        System.out.println("10. Afficher Profile");
+        System.out.println("11. Logout");
         System.out.println("0. Exit");
 
         System.out.println("Entrer une Choix");
@@ -97,6 +127,8 @@ public class Main {
             case 1:
                 break;
             case 2:
+                saveRoom();
+                afficherRooms();
                 break;
             case 3:
                 break;
@@ -113,6 +145,15 @@ public class Main {
             case 9:
                 break;
             case 10:
+                User user = Authservice.getUserLogin();
+                System.out.println("Nom : " + user.getFullName()  );
+                System.out.println("Phone : " + user.getPhone()  );
+                System.out.println("Email : " + user.getEmail()  );
+                System.out.println("Password : " + user.getPassword()  );
+                break;
+            case 11:
+                Authservice.logOut();
+                System.out.println("Logout");
                 break;
             default:
                 break;
@@ -120,14 +161,15 @@ public class Main {
     }
 
     static void main(String[] args) {
-        service = new AuthService();
+        Authservice = new AuthService();
+        RoomService = new RoomService();
             while(true) {
                 int choix = menuAuth();
                 switch (choix) {
                     case 1:
                         System.out.println("Register");
                         menuRegister();
-                        List<User> users = service.getRepo().findAll();
+                        List<User> users = Authservice.getRepo().findAll();
                         for(User user : users){
                             System.out.println("Nom : " + user.getFullName());
                             System.out.println("Email : " + user.getEmail());
