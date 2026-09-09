@@ -4,12 +4,10 @@ import Service.AuthService;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Scanner;
 import  Exception.EmailAlreadyExistsException;
 import  Exception.InvalidCredentialsException;
 import Service.RoomService;
 import utils.InputUtils;
-import utils.ValidationUtils;
 
 public class Main {
 
@@ -26,13 +24,10 @@ public class Main {
     }
 
     public static void menuLogin() {
-        Scanner scanner = new Scanner(System.in);
         while(true) {
             try {
-                System.out.println("Email : ");
-                String email = scanner.nextLine();
-                System.out.println("Password : ");
-                String password = scanner.nextLine();
+                String email = InputUtils.readString("Email");
+                String password = InputUtils.readString("Mode passe");
                 User user = Authservice.Login(email, password);
                 return;
             } catch (IllegalArgumentException e) {
@@ -75,20 +70,16 @@ public class Main {
 
     public static void menuRegister() {
 
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             try {
-                System.out.println("FullName : ");
-                String fullName = scanner.nextLine();
+                String fullName = InputUtils.readString("FullName : ");
 
                 System.out.println("Phone : ");
-                String phone = scanner.nextLine();
+                String phone = InputUtils.readString("Phone : ");
 
-                System.out.println("Email : ");
-                String email = scanner.nextLine();
-                System.out.println("Mode passe : ");
-                String password = scanner.nextLine();
+                String email = InputUtils.readString("Email : ");
+                String password = InputUtils.readString("Mode passe : ");
 
                 User user = Authservice.Register(fullName, email, phone, password);
 
@@ -164,7 +155,6 @@ public class Main {
     }
 
     public static void menuPrincipale(){
-        Scanner scanner = new Scanner(System.in);
         while (true){
         System.out.println("1. Search available rooms");
         System.out.println("2. View all rooms");
@@ -179,8 +169,7 @@ public class Main {
         System.out.println("11. Logout");
         System.out.println("0. Exit");
 
-        System.out.println("Entrer une Choix");
-        int choix = scanner.nextInt();
+        int choix = InputUtils.readInt("Entrer une Choix");
         switch (choix) {
             case 1:
                 break;
