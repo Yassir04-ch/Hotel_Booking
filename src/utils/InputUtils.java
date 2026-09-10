@@ -3,11 +3,12 @@ import java.util.Scanner;
 
 public class InputUtils {
 
+    private static Scanner scanner = new Scanner(System.in);
+
     public static String readString(String message) {
 
-        Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.print(message);
+            System.out.println(message);
 
             String input = scanner.nextLine().trim();
 
@@ -24,8 +25,6 @@ public class InputUtils {
         while (true) {
 
             System.out.println(message);
-
-            Scanner scanner = new Scanner(System.in);
 
             String input = scanner.nextLine().trim();
 

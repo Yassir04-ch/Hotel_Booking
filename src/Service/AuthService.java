@@ -57,7 +57,7 @@ public class AuthService {
         return user;
     }
 
-    public User getUserLogin(){
+    public static User getUserLogin(){
         return userLogin;
     }
     public void setUserLogin(User user){

@@ -3,5 +3,5 @@ package Model;
 public enum RoomType {
     SINGLE,
     DOUBLE,
-    SUITE,
+    SUITE
 }
