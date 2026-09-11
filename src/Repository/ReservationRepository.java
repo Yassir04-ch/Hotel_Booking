@@ -1,6 +1,7 @@
 package Repository;
 
 import Model.Reservation;
+import Model.ReservationStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,5 +19,7 @@ public interface ReservationRepository {
     List<Reservation> findByRoomNumber(String roomNumber);
 
     List<Reservation> findAll();
+
+    void update(Reservation reservation);
 
 }

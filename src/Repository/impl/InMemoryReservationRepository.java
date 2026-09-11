@@ -30,6 +30,7 @@ public class InMemoryReservationRepository implements ReservationRepository {
         return Optional.empty();
     }
 
+
     @Override
     public List<Reservation> findByUserId(UUID userId) {
         List<Reservation> listReservations = new ArrayList<>();
@@ -59,5 +60,12 @@ public class InMemoryReservationRepository implements ReservationRepository {
             listReservation.add(reservation);
         }
         return listReservation;
+    }
+
+
+    @Override
+    public void update(Reservation reservation){
+        this.reservations.put(reservation.getId() , reservation);
+
     }
 }

@@ -8,6 +8,7 @@ import  Exception.EmailAlreadyExistsException;
 import  Exception.InvalidCredentialsException;
 import Exception.InvalidReservationDateException;
 import Exception.ReservationNotFoundException;
+import Exception.RoomNotFoundException;
 import Service.ReservationService;
 import Service.RoomService;
 import utils.DateUtils;
@@ -178,16 +179,18 @@ public class Main {
       }
     }
 
-    public static void creeteReservation()  {
+    public static void createReservation()  {
       try{
           afficherRoomsAvailable();
           String roomNumber = InputUtils.readString("Entrer RoomNumber : ");
-          LocalDate checkIn = DateUtils.readDate("Entrer  checkIn ex (2026-09-15) : ");
+          LocalDate checkIn = DateUtils.readDate("Entrer  Date d'arrivée ex (2026-09-15) : ");
           LocalDate checkout = DateUtils.readDate("Entrer Checkout ex (2026-09-15) : ");
           int numberOfGuests = InputUtils.readInt("Entrer numbre des persone ");
           ReservationService.createReservation(roomNumber ,checkIn , checkout , numberOfGuests);
 
       }catch (InvalidReservationDateException e){
+          System.out.println("Erreur :" + e.getMessage());
+      }catch (RoomNotFoundException e){
           System.out.println("Erreur :" + e.getMessage());
       }
     }
@@ -198,8 +201,8 @@ public class Main {
       for (Reservation reservation : reservations){
           System.out.println("Code de réservation : " + reservation.getReservationCode());
           System.out.println("Numéro de chambre : " + reservation.getRoomNumber());
-          System.out.println("Date d'arrivée : " + reservation.getCheckIn());
-          System.out.println("Date de départ : " + reservation.getCheckOut());
+          System.out.println("Date de départ : " + reservation.getCheckIn());
+          System.out.println("Date d'arrivée : " + reservation.getCheckOut());
           System.out.println("Nombre de personnes : " + reservation.getNumberOfGuests());
           System.out.println("Nombre de nuits : " + reservation.getNumberOfNights());
           System.out.println("Prix total : " + reservation.getTotalPrice() + " DH");
@@ -218,6 +221,24 @@ public class Main {
         }
     }
 
+    public static void updateReservation(){
+        try{
+            userReservation();
+            String reservationCode = InputUtils.readString("Entrer code de reservation");
+            LocalDate checkIn = DateUtils.readDate("Entrer Date de départ ");
+            LocalDate checkout = DateUtils.readDate("Entrer Date d'arrivée ");
+            String roomNumber = InputUtils.readString("Entrer nombre de room");
+            int numberGuest = InputUtils.readInt("Entrer nombre des persones");
+            ReservationService.updateReservation(reservationCode ,roomNumber, checkIn, checkout, numberGuest);
+        }catch (ReservationNotFoundException e){
+            System.out.println("Erreur : "+e.getMessage());
+        }catch (InvalidReservationDateException e){
+            System.out.println("Erreur : "+e.getMessage());
+        }catch (RoomNotFoundException e){
+            System.out.println("Erreur : "+e.getMessage());
+        }
+    }
+
     public static void menuPrincipale(){
         while (true){
         System.out.println("1. Search available rooms");
@@ -227,10 +248,8 @@ public class Main {
         System.out.println("5. Reservation details");
         System.out.println("6. Update reservation");
         System.out.println("7. Cancel reservation");
-        System.out.println("8. Update profile");
-        System.out.println("9. Change password");
-        System.out.println("10. Afficher Profile");
-        System.out.println("11. Logout");
+        System.out.println("8. Afficher Profile");
+        System.out.println("9. Logout");
         System.out.println("0. Exit");
 
         int choix = InputUtils.readInt("Entrer une Choix");
@@ -242,7 +261,7 @@ public class Main {
                 afficherRooms();
                 break;
             case 3:
-                creeteReservation();
+                createReservation();
                 break;
             case 4:
                 userReservation();
@@ -250,21 +269,21 @@ public class Main {
             case 5:
                 break;
             case 6:
+                updateReservation();
                 break;
             case 7:
                 cancelReservation();
                 break;
             case 8:
-                break;
-            case 9:
-                break;
-            case 10:
                 menuProfile();
                 break;
-            case 11:
+            case 9:
                 Authservice.logOut();
                 System.out.println("Logout");
                 return;
+            case 0:
+                System.out.println("Good Day");
+                System.exit(0);
             default:
                 break;
         }

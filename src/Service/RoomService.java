@@ -5,6 +5,7 @@ import Model.Room;
 import Model.RoomStatus;
 import Model.User;
 import Repository.impl.InMemoryRoomRepository;
+import Exception.RoomNotFoundException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class RoomService {
         return this.repo;
     }
 
-    public Room findRoom(String roomNumber){
+    public Room findRoom(String roomNumber) throws RoomNotFoundException {
          Room room = this.repo.findByRoomNumber(roomNumber).orElseThrow(()->
                  new IllegalArgumentException("Room not found"));
          return room;
@@ -43,12 +44,12 @@ public class RoomService {
         return listRoom;
     }
 
-    public void updateStatusAvailable(String roomNumber){
+    public void updateStatusAvailable(String roomNumber) throws RoomNotFoundException{
         Room room = this.findRoom(roomNumber);
         this.repo.updateStatus(room , RoomStatus.AVAILABLE );
     }
 
-    public void updateStatusMAINTENANCE(String roomNumber){
+    public void updateStatusMAINTENANCE(String roomNumber) throws  RoomNotFoundException{
         Room room = this.findRoom(roomNumber);
         this.repo.updateStatus(room , RoomStatus.MAINTENANCE );
     }
