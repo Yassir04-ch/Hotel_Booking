@@ -48,7 +48,7 @@ public class AuthMenu {
                 String email = InputUtils.readString("Email : ");
                 String password = InputUtils.readString("Mode passe : ");
 
-                Main.Authservice.Register(fullName, email, phone, password);
+                Main.Authservice.Register(fullName, email, phone, password , "user");
 
                 System.out.println("Register réussi !");
                 return;

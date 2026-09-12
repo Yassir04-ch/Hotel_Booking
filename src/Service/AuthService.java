@@ -1,5 +1,7 @@
 package Service;
 
+import Model.Admin;
+import Model.Person;
 import Model.User;
 import Repository.impl.InMemoryUserRepository;
 import utils.ValidationUtils;
@@ -10,7 +12,7 @@ import java.util.UUID;
 
 public class AuthService {
     private final InMemoryUserRepository repo;
-    private static User userLogin = null;
+    private static Person userLogin = null;
 
     public AuthService(){
         this.repo = new InMemoryUserRepository();
@@ -20,7 +22,7 @@ public class AuthService {
         return repo;
     }
 
-    public void Register(String fullName , String email, String phone , String password)  {
+    public void Register(String fullName , String email, String phone , String password , String role)  {
       if(!ValidationUtils.isValidName(fullName)){
           throw new IllegalArgumentException("Name invalide");
       }
@@ -36,8 +38,15 @@ public class AuthService {
       if(repo.existsByEmail(email)){
           throw new EmailAlreadyExistsException("Email déja exist");
       }
-      User user = new User(UUID.randomUUID(),fullName ,email ,phone , password );
-      this.repo.save(user);
+      if(role.equals("user")){
+      Person user = new User(UUID.randomUUID(),fullName ,email ,phone , password );
+          this.repo.save(user);
+
+      }else {
+          Person admin = new Admin(UUID.randomUUID(),fullName ,email ,phone , password );
+          this.repo.save(admin);
+      }
+
 
     }
 
@@ -48,14 +57,14 @@ public class AuthService {
         if(!repo.existsByEmail(email)){
             throw new InvalidCredentialsException("Email n'éxist pas");
         }
-        User user = repo.findByEmail(email);
+        Person user = repo.findByEmail(email);
         if(!user.getPassword().equals(password)){
             throw new InvalidCredentialsException("Password incorect");
         }
         userLogin = user;
     }
 
-    public static User getUserLogin(){
+    public static Person getUserLogin(){
         return userLogin;
     }
     public void setUserLogin(User user){
@@ -71,7 +80,7 @@ public class AuthService {
     }
 
     public void updateProfile(String fullName , String email , String phone){
-        User user = this.getUserLogin();
+        Person user = this.getUserLogin();
 
         if(!ValidationUtils.isValidName(fullName)){
             throw new IllegalArgumentException("Name invalide");
@@ -92,7 +101,7 @@ public class AuthService {
     }
 
     public void UpdatePassword(String password,String oldPassword){
-        User user = this.getUserLogin();
+        Person user = this.getUserLogin();
         if(!ValidationUtils.isValidPassword(password)){
             throw new IllegalArgumentException("Password invalide");
         }

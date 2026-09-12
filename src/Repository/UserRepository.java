@@ -1,5 +1,6 @@
 package Repository;
 
+import Model.Person;
 import Model.User;
 
 import java.util.List;
@@ -8,15 +9,15 @@ import java.util.UUID;
 
 public interface UserRepository {
 
-    void save(User user);
+    void save(Person user);
 
-    Optional<User> findById(UUID id);
+    Optional<Person> findById(UUID id);
 
-    User findByEmail(String email);
+    Person findByEmail(String email);
 
     boolean existsByEmail(String email);
 
-    List<User> findAll();
+    List<Person> findAll();
 
-    void update(User user);
+    void update(Person user);
 }

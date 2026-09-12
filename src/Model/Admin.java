@@ -10,6 +10,6 @@ public class Admin extends Person{
 
     @Override
     public String getRole(){
-        return "user";
+        return "admin";
     }
 }

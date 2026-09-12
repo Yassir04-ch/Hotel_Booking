@@ -1,5 +1,6 @@
 package Main;
 
+import Model.Person;
 import Model.User;
 import Service.AuthService;
 import Exception.EmailAlreadyExistsException;
@@ -9,7 +10,7 @@ import utils.InputUtils;
 public class ProfileMenu {
 
     public static void menuProfile(){
-        User user = Main.Authservice.getUserLogin();
+        Person user = Main.Authservice.getUserLogin();
         boolean ret = true;
         while (ret) {
 

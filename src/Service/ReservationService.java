@@ -196,14 +196,14 @@ public class ReservationService {
     }
 
     public List<Reservation> sortReservationsByCreatedAt(){
-        User user = AuthService.getUserLogin();
+        Person user = AuthService.getUserLogin();
         List<Reservation> reservations = this.repo.findByUserId(user.getId());
         reservations.sort((a,b) -> a.getCreatedAt().compareTo(b.getCreatedAt()));
         return reservations;
     }
 
     public List<Reservation> sortReservationsByCheckIn(){
-        User user = AuthService.getUserLogin();
+        Person user = AuthService.getUserLogin();
         List<Reservation> reservations = this.repo.findByUserId(user.getId());
         reservations.sort((a,b) -> a.getCheckIn().compareTo(b.getCheckIn()) );
         return reservations;

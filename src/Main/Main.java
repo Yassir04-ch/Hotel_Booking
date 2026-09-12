@@ -1,8 +1,12 @@
 package Main;
 
+import Model.Admin;
+import Model.Person;
 import Service.AuthService;
 import Service.RoomService;
 import Service.ReservationService;
+
+import java.util.UUID;
 
 public class Main {
 
@@ -15,7 +19,7 @@ public class Main {
         Authservice = new AuthService();
         RoomService = new RoomService();
         ReservationService = new ReservationService(RoomService);
-
+        Authservice.Register("admin_prin" ,"admin@gmail.com","0987654321","admin123","admin");;
         while(true) {
 
             int choix = AuthMenu.menuAuth();
@@ -31,7 +35,12 @@ public class Main {
                     System.out.println("Login");
                     AuthMenu.menuLogin();
                     System.out.println("Welcome ");
+                    if(AuthService.getUserLogin().getRole().equals("user")){
                     MenuPrincipale.menuPrincipale();
+                    }
+                    else {
+                        AdminMenu.menuAdmin();
+                    }
                     break;
 
                 default:
