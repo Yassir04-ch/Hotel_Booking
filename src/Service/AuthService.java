@@ -20,7 +20,7 @@ public class AuthService {
         return repo;
     }
 
-    public  User Register(String fullName , String email, String phone , String password)  {
+    public void Register(String fullName , String email, String phone , String password)  {
       if(!ValidationUtils.isValidName(fullName)){
           throw new IllegalArgumentException("Name invalide");
       }
@@ -39,10 +39,9 @@ public class AuthService {
       User user = new User(UUID.randomUUID(),fullName ,email ,phone , password );
       this.repo.save(user);
 
-      return user;
     }
 
-    public User Login(String email , String password){
+    public void Login(String email , String password){
         if(!ValidationUtils.isValidEmail(email)){
             throw new IllegalArgumentException("Email invalide");
         }
@@ -54,7 +53,6 @@ public class AuthService {
             throw new InvalidCredentialsException("Password incorect");
         }
         userLogin = user;
-        return user;
     }
 
     public static User getUserLogin(){
