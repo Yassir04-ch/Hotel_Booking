@@ -9,6 +9,7 @@ import  Exception.InvalidCredentialsException;
 import Exception.InvalidReservationDateException;
 import Exception.ReservationNotFoundException;
 import Exception.RoomNotFoundException;
+import Exception.RoomUnavailableException;
 import Service.ReservationService;
 import Service.RoomService;
 import utils.DateUtils;
@@ -192,11 +193,39 @@ public class Main {
           System.out.println("Erreur :" + e.getMessage());
       }catch (RoomNotFoundException e){
           System.out.println("Erreur :" + e.getMessage());
+      }catch (RoomUnavailableException  e){
+          System.out.println("Erreur :" + e.getMessage());
       }
     }
 
-    public static void userReservation(){
-      List<Reservation> reservations =  ReservationService.userReservation();
+    public static void roomAvailableDate(){
+        try{
+            LocalDate checkin = DateUtils.readDate("Entrer  Date d'arrivée ex (2026-09-15) : ");
+            LocalDate checkout = DateUtils.readDate("Entrer Checkout ex (2026-09-15) : ");
+          List<Room> rooms =  ReservationService.roomAvailableDate(checkin , checkout);
+            for(Room room : rooms){
+                System.out.println("=======================");
+                System.out.println("roomNumber : " + room.getRoomNumber());
+                System.out.println("capacity : " + room.getCapacity());
+                System.out.println("price : " + room.getPrice());
+                System.out.println("type : " + room.getType());
+                System.out.println("status : " + room.getStatus());
+                System.out.println("=======================");
+            }
+        }catch (RoomUnavailableException e){
+            System.out.println("Erreur :" + e.getMessage());
+
+        }catch (InvalidReservationDateException e){
+            System.out.println("Erreur :" + e.getMessage());
+
+        }
+    }
+
+    public static void userReservation(List<Reservation> reservations){
+        if(reservations.isEmpty()){
+            System.out.println("Auccune reservation");
+            return;
+        }
           System.out.println("===== Réservation =====");
       for (Reservation reservation : reservations){
           System.out.println("Code de réservation : " + reservation.getReservationCode());
@@ -209,11 +238,34 @@ public class Main {
           System.out.println("Statut : " + reservation.getStatus());
           System.out.println("Date de création : " + reservation.getCreatedAt());
       }
+
+        sortReservation();
+    }
+
+
+
+    public static void sortReservation(){
+        System.out.println("==== Trier mes réservations ===");
+        System.out.println("1. Trier par date de création");
+        System.out.println("2. Trier par date d'arrivée");
+        int choix = InputUtils.readInt("Entrer votre choix : ");
+        switch (choix){
+            case 1 :
+                 userReservation(ReservationService.sortReservationsByCreatedAt());
+                 break;
+            case 2 :
+                userReservation(ReservationService.sortReservationsByCheckIn());
+                break;
+            default:
+                System.out.println("Choix invalide");
+                break;
+
+        }
     }
 
     public static void cancelReservation(){
         try{
-            userReservation();
+            userReservation(ReservationService.userReservation());
             String code = InputUtils.readString("Entrer code du Reservation");
             ReservationService.cancelReservation(code);
         }catch (ReservationNotFoundException e){
@@ -223,7 +275,7 @@ public class Main {
 
     public static void updateReservation(){
         try{
-            userReservation();
+            userReservation(ReservationService.userReservation());
             String reservationCode = InputUtils.readString("Entrer code de reservation");
             LocalDate checkIn = DateUtils.readDate("Entrer Date de départ ");
             LocalDate checkout = DateUtils.readDate("Entrer Date d'arrivée ");
@@ -255,7 +307,7 @@ public class Main {
         int choix = InputUtils.readInt("Entrer une Choix");
         switch (choix) {
             case 1:
-                afficherRoomsAvailable();
+                roomAvailableDate();
                 break;
             case 2:
                 afficherRooms();
@@ -264,7 +316,7 @@ public class Main {
                 createReservation();
                 break;
             case 4:
-                userReservation();
+                userReservation(ReservationService.userReservation());
                 break;
             case 5:
                 break;
@@ -289,7 +341,6 @@ public class Main {
         }
     }
     }
-
 
     static void main(String[] args) {
         Authservice = new AuthService();

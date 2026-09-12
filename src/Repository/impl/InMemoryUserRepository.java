@@ -3,10 +3,7 @@ package Repository.impl;
 import Model.User;
 import Repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryUserRepository implements UserRepository {
 
@@ -18,8 +15,8 @@ public class InMemoryUserRepository implements UserRepository {
     };
 
     @Override
-   public User findById(UUID id){
-        return this.users.get(id);
+   public Optional<User> findById(UUID id){
+        return Optional.ofNullable(users.get(id));
     };
 
     @Override

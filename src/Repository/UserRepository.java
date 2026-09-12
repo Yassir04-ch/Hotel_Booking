@@ -10,7 +10,7 @@ public interface UserRepository {
 
     void save(User user);
 
-    User findById(UUID id);
+    Optional<User> findById(UUID id);
 
     User findByEmail(String email);
 

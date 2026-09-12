@@ -1,22 +1,18 @@
 package Service;
 
-import Model.Reservation;
-import Model.ReservationStatus;
-import Model.Room;
-import Model.RoomStatus;
+import Model.*;
 import Repository.impl.InMemoryReservationRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import Exception.InvalidReservationDateException;
 import  Exception.ReservationNotFoundException;
 import  Exception.RoomNotFoundException;
+import  Exception.RoomUnavailableException;
 
 public class ReservationService {
     private InMemoryReservationRepository repo ;
@@ -28,20 +24,19 @@ public class ReservationService {
     }
 
 
-    public boolean checkDate(Room room, LocalDate checkIn, LocalDate checkOut)
-            throws InvalidReservationDateException {
+    public void validateDates(LocalDate checkIn, LocalDate checkOut
+                ) throws InvalidReservationDateException {
 
         if (checkIn.isBefore(LocalDate.now())) {
-            throw new InvalidReservationDateException(
-                    "Date checkin invalide."
-            );
+            throw new InvalidReservationDateException("Date checkin invalide.");
         }
 
         if (!checkOut.isAfter(checkIn)) {
-            throw new InvalidReservationDateException(
-                    "Date checkout invalide."
-            );
+            throw new InvalidReservationDateException("Date checkout invalide.");
         }
+    }
+
+    public boolean checkDate(Room room, LocalDate checkIn, LocalDate checkOut){
 
         List<Reservation> listReservations =
                 this.repo.findByRoomNumber(room.getRoomNumber());
@@ -62,11 +57,11 @@ public class ReservationService {
     }
 
     public void createReservation(String roomNumber, LocalDate checkIn, LocalDate checkOut,
-                         int numberOfGuests) throws InvalidReservationDateException , RoomNotFoundException {
+                         int numberOfGuests) throws InvalidReservationDateException , RoomNotFoundException , RoomUnavailableException {
 
-        try {
+        this.validateDates(checkIn, checkOut);
 
-            Room room = roomService.findRoom(roomNumber);
+        Room room = roomService.findRoom(roomNumber);
 
             if (numberOfGuests <= 0) {
                 throw new InvalidReservationDateException(
@@ -81,13 +76,11 @@ public class ReservationService {
             }
 
             if (room.getStatus() != RoomStatus.AVAILABLE) {
-                throw new IllegalArgumentException(
-                        "La chambre n'est pas disponible."
-                );
+                throw new RoomUnavailableException("La chambre n'est pas disponible.");
             }
 
             if (!checkDate(room, checkIn, checkOut)) {
-                throw new InvalidReservationDateException(
+                throw new RoomUnavailableException(
                         "La chambre est déja réservée dans " + checkIn);
             }
 
@@ -102,16 +95,6 @@ public class ReservationService {
 
             System.out.println("Reservation créée.");
 
-        } catch (IllegalArgumentException e) {
-
-            System.out.println("Erreur : " + e.getMessage());
-
-        } catch (InvalidReservationDateException e) {
-
-            System.out.println("Erreur : " + e.getMessage());
-        }catch (RoomNotFoundException e){
-
-        }
     }
 
     public List<Reservation> userReservation(){
@@ -121,7 +104,7 @@ public class ReservationService {
     }
 
 
-    public void cancelReservation(String code) throws  ReservationNotFoundException{
+    public void cancelReservation(String code) throws  ReservationNotFoundException {
         Reservation reservation = this.repo.findByCode(code).orElseThrow(() ->
                 new ReservationNotFoundException("Réservation Not Found."));
 
@@ -188,6 +171,42 @@ public class ReservationService {
         this.repo.update(reservation);
 
         System.out.println("Reservation est modifiée.");
+    }
+
+    public List<Room> roomAvailableDate(LocalDate checkin , LocalDate chechout)
+            throws RoomUnavailableException , InvalidReservationDateException{
+
+        this.validateDates(checkin , chechout);
+
+        List<Room> listRoom = new ArrayList<>();
+        List<Room> rooms = this.roomService.getAllRooms().stream().
+                filter(room -> room.getStatus() == RoomStatus.AVAILABLE).toList();
+
+        for (Room room : rooms) {
+                if (this.checkDate(room, checkin, chechout)) {
+                    listRoom.add(room);
+                }
+        }
+
+        if (listRoom.isEmpty()) {
+            throw new RoomUnavailableException("Aucune chambre disponible pour cette période.");
+        }
+
+        return listRoom;
+    }
+
+    public List<Reservation> sortReservationsByCreatedAt(){
+        User user = AuthService.getUserLogin();
+        List<Reservation> reservations = this.repo.findByUserId(user.getId());
+        reservations.sort((a,b) -> a.getCreatedAt().compareTo(b.getCreatedAt()));
+        return reservations;
+    }
+
+    public List<Reservation> sortReservationsByCheckIn(){
+        User user = AuthService.getUserLogin();
+        List<Reservation> reservations = this.repo.findByUserId(user.getId());
+        reservations.sort((a,b) -> a.getCheckIn().compareTo(b.getCheckIn()) );
+        return reservations;
     }
 
 
