@@ -1,10 +1,13 @@
 package Main;
 
+import Model.Person;
 import Model.User;
 import Service.AuthService;
 import Exception.EmailAlreadyExistsException;
 import Exception.InvalidCredentialsException;
 import utils.InputUtils;
+
+import java.util.List;
 
 public class AuthMenu {
 
@@ -50,7 +53,7 @@ public class AuthMenu {
 
                 Main.Authservice.Register(fullName, email, phone, password , "user");
 
-                System.out.println("Register réussi !");
+                System.out.println("Register réussi ");
                 return;
 
             } catch (IllegalArgumentException e) {
@@ -61,5 +64,15 @@ public class AuthMenu {
                 System.out.println("Veuillez réessayer");
             }
         }
+    }
+
+    public static void getAll(){
+       List<Person> users = Main.Authservice.getAll();
+       for(Person user : users){
+           System.out.println("Nom : " + user.getFullName());
+           System.out.println("Phone : " + user.getPhone());
+           System.out.println("Email : " + user.getEmail());
+           System.out.println("Password : " + user.getPassword());
+       }
     }
 }

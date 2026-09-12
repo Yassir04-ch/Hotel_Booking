@@ -1,13 +1,14 @@
 package Service;
 
+import Exception.EmailAlreadyExistsException;
+import Exception.InvalidCredentialsException;
 import Model.Admin;
 import Model.Person;
 import Model.User;
 import Repository.impl.InMemoryUserRepository;
 import utils.ValidationUtils;
-import Exception.EmailAlreadyExistsException;
-import Exception.InvalidCredentialsException;
 
+import java.util.List;
 import java.util.UUID;
 
 public class AuthService {
@@ -110,6 +111,15 @@ public class AuthService {
         }
         user.setPassword(password);
         repo.update(user);
+    }
+
+    public List<Person> getAll(){
+        List<Person> users = this.repo.findAll().stream().
+                filter(e->e.getRole().equals("user")).toList();
+        if(users.isEmpty()){
+            System.out.println("Aucune client");
+        }
+        return users;
     }
 
 

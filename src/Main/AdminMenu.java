@@ -10,10 +10,10 @@ public class AdminMenu {
             System.out.println("1. Add room");
             System.out.println("2. View all rooms");
             System.out.println("3. Update room");
-            System.out.println("4. Set room maintenance");
-            System.out.println("5. View all reservations");
-            System.out.println("6. View all clients");
-            System.out.println("7. Logout");
+            System.out.println("4. Set room AVAILABLE");
+            System.out.println("5. Set room maintenance");
+            System.out.println("6. View all reservations");
+            System.out.println("7. View all clients");
             System.out.println("0. Exit");
 
             int choix = InputUtils.readInt("Entrer une Choix");
@@ -21,7 +21,7 @@ public class AdminMenu {
             switch (choix) {
 
                 case 1:
-                    RoomMenu.roomAvailableDate();
+                    RoomMenu.creetRoom();
                     break;
 
                 case 2:
@@ -29,14 +29,15 @@ public class AdminMenu {
                     break;
 
                 case 3:
-                    ReservationMenu.createReservation();
+                    RoomMenu.updateRoom();
                     break;
 
                 case 4:
-                    ReservationMenu.userReservation(Main.ReservationService.userReservation());
+                     RoomMenu.updateStatusAvailable();
                     break;
 
                 case 5:
+                    RoomMenu.updateStatusMAINTENANCE();
                     break;
 
                 case 6:
@@ -44,17 +45,8 @@ public class AdminMenu {
                     break;
 
                 case 7:
-                    ReservationMenu.cancelReservation();
+                    AuthMenu.getAll();
                     break;
-
-                case 8:
-                    ProfileMenu.menuProfile();
-                    break;
-
-                case 9:
-                    Main.Authservice.logOut();
-                    System.out.println("Logout");
-                    return;
 
                 case 0:
                     System.out.println("Good Day");

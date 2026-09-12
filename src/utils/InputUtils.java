@@ -1,4 +1,5 @@
 package utils;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class InputUtils {
@@ -36,6 +37,24 @@ public class InputUtils {
                 System.out.println(
                         "Entrer une nombre."
                 );
+            }
+        }
+    }
+
+    public static BigDecimal readBigDecimal(String message) {
+
+        while (true) {
+
+            System.out.println(message);
+
+            String input = scanner.nextLine().trim();
+
+            try {
+                return new BigDecimal(input);
+
+            } catch (NumberFormatException e) {
+
+                System.out.println("Prix invalide.");
             }
         }
     }
