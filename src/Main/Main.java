@@ -42,7 +42,6 @@ public class Main {
                         AdminMenu.menuAdmin();
                     }
                     break;
-
                 default:
                     System.out.println("Good Day");
                     System.exit(0);

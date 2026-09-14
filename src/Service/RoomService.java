@@ -75,6 +75,45 @@ public class RoomService {
         this.repo.updateStatus(room , RoomStatus.MAINTENANCE );
     }
 
+    public void afficherRooms(List<Room> rooms){
+        for (Room room : rooms){
+            System.out.println("=======================");
+            System.out.println("roomNumber : " + room.getRoomNumber());
+            System.out.println("capacity : " + room.getCapacity());
+            System.out.println("price : " + room.getPrice());
+            System.out.println("type : " + room.getType());
+            System.out.println("status : " + room.getStatus());
+            System.out.println("=======================");
+        }
+    }
+
+    public void filterParType(RoomType type){
+        List<Room> rooms = this.repo.findAll().stream().filter(e->e.getType() == type).toList();
+        if(rooms.isEmpty()){
+            System.out.println("Aucune room ");
+            return;
+        }
+       this.afficherRooms(rooms);
+    }
+
+
+    public void filterParPrix(BigDecimal prix){
+        List<Room> rooms = this.repo.findAll().stream().filter(e -> e.getPrice().compareTo(prix) <= 0).toList();
+        if(rooms.isEmpty()){
+            System.out.println("Aucune room");
+            return;
+        }
+       this.afficherRooms(rooms);
+    }
+
+    public void filterCapacity(int capacity){
+        List<Room> rooms = this.repo.findAll().stream().filter(e -> e.getCapacity() == capacity).toList();
+        if(rooms.isEmpty()){
+            System.out.println("Aucune room");
+            return;
+        }
+        this.afficherRooms(rooms);
+    }
 
 
 

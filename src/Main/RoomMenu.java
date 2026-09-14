@@ -171,4 +171,61 @@ public class RoomMenu {
             System.out.println("Erreur : "+e.getMessage());
         }
     }
+
+    public static void RoomParType(){
+        System.out.println("1-SINGLE");
+        System.out.println("2-DOUBLE");
+        System.out.println("3-SUITE");
+        int choix = InputUtils.readInt("Enter votre choix : ");
+        switch (choix){
+            case 1 :
+                Main.RoomService.filterParType(RoomType.SINGLE);
+                break;
+            case 2:
+                Main.RoomService.filterParType(RoomType.DOUBLE);
+                break;
+            case 3:
+                Main.RoomService.filterParType(RoomType.SUITE);
+                break;
+            default:
+                System.out.println("choix Invalide");
+                break;
+        }
+    }
+
+    public static void  RoomParPrix(){
+        BigDecimal prix = InputUtils.readBigDecimal("Entrer maximum prix : ");
+        Main.RoomService.filterParPrix(prix);
+    }
+
+    public static void RoomParCapacity(){
+        int capacity = InputUtils.readInt("Entrer capacity : ");
+        Main.RoomService.filterCapacity(capacity);
+    }
+
+    public static void filterRooms() {
+        while (true) {
+            System.out.println("1-filtrer par Type");
+            System.out.println("2-filtrer par capacité");
+            System.out.println("3-filtrer par prix");
+            System.out.println("0-return");
+            int choix = InputUtils.readInt("Entrer votre choix");
+            switch (choix) {
+                case 1:
+                    RoomParType();
+                    break;
+                case 2:
+                    RoomParCapacity();
+                    break;
+                case 3:
+                    RoomParPrix();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("invalide choix");
+                    break;
+            }
+        }
+    }
 }

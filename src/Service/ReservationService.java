@@ -64,15 +64,11 @@ public class ReservationService {
         Room room = roomService.findRoom(roomNumber);
 
             if (numberOfGuests <= 0) {
-                throw new InvalidReservationDateException(
-                        "Le nombre de personnes invalide."
-                );
+                throw new InvalidReservationDateException("Le nombre de personnes invalide.");
             }
 
             if (numberOfGuests > room.getCapacity()) {
-                throw new InvalidReservationDateException(
-                        "Le nombre de personnes dépasse la capacité de la chambre."
-                );
+                throw new InvalidReservationDateException("Le nombre de personnes dépasse la capacité de la chambre.");
             }
 
             if (room.getStatus() != RoomStatus.AVAILABLE) {
@@ -207,6 +203,26 @@ public class ReservationService {
         List<Reservation> reservations = this.repo.findByUserId(user.getId());
         reservations.sort((a,b) -> a.getCheckIn().compareTo(b.getCheckIn()) );
         return reservations;
+    }
+
+    public void getAll(){
+        List<Reservation> reservations = this.repo.findAll();
+        if(reservations.isEmpty()){
+            System.out.println("Aucune Reservation");
+            return;
+        }
+        for(Reservation reservation : reservations){
+            System.out.println("Code de réservation : " + reservation.getReservationCode());
+            System.out.println("UserId : " + reservation.getUserId());
+            System.out.println("Numéro de chambre : " + reservation.getRoomNumber());
+            System.out.println("Date de départ : " + reservation.getCheckIn());
+            System.out.println("Date d'arrivée : " + reservation.getCheckOut());
+            System.out.println("Nombre de personnes : " + reservation.getNumberOfGuests());
+            System.out.println("Nombre de nuits : " + reservation.getNumberOfNights());
+            System.out.println("Prix total : " + reservation.getTotalPrice() + " DH");
+            System.out.println("Statut : " + reservation.getStatus());
+            System.out.println("Date de création : " + reservation.getCreatedAt());        }
+
     }
 
 

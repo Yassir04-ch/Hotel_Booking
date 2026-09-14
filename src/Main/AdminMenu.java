@@ -1,5 +1,6 @@
 package Main;
 
+import Service.ReservationService;
 import utils.InputUtils;
 
 public class AdminMenu {
@@ -41,7 +42,7 @@ public class AdminMenu {
                     break;
 
                 case 6:
-                    ReservationMenu.updateReservation();
+                    Main.ReservationService.getAll();
                     break;
 
                 case 7:

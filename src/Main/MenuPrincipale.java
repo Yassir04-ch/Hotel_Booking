@@ -28,6 +28,7 @@ public class MenuPrincipale {
 
                 case 2:
                     RoomMenu.afficherRooms();
+                    RoomMenu.filterRooms();
                     break;
 
                 case 3:
