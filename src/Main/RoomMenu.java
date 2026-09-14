@@ -14,21 +14,9 @@ import java.util.List;
 public class RoomMenu {
 
     public static void saveRoom(){
-        Room room1 = new Room(
-                "101",
-                RoomType.SINGLE,
-                1,
-                new BigDecimal("500.00"),
-                RoomStatus.MAINTENANCE
-        );
+        Room room1 = new Room("101", RoomType.SINGLE, 1, new BigDecimal("500.00"), RoomStatus.MAINTENANCE);
 
-        Room room2 = new Room(
-                "303",
-                RoomType.DOUBLE,
-                2,
-                new BigDecimal("800.00"),
-                RoomStatus.AVAILABLE
-        );
+        Room room2 = new Room("303", RoomType.DOUBLE, 2, new BigDecimal("800.00"), RoomStatus.AVAILABLE);
 
         Main.RoomService.getRepo().save(room1);
         Main.RoomService.getRepo().save(room2);

@@ -6,9 +6,8 @@ import Repository.impl.InMemoryReservationRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
 import Exception.InvalidReservationDateException;
 import  Exception.ReservationNotFoundException;
 import  Exception.RoomNotFoundException;
@@ -225,5 +224,65 @@ public class ReservationService {
 
     }
 
+    public void reservationStatistique(){
+        List<Reservation> reservations =  this.repo.findAll();
+        int totaleReservation =(int) reservations.stream().count();
+        int annuleReservation = (int) reservations.stream().filter(e -> e.getStatus() == ReservationStatus.CANCELLED).count();
+        BigDecimal revenuTotal = BigDecimal.ZERO;
+        List<Reservation> reservationsConfirm = reservations.stream().filter(e ->e.getStatus() == ReservationStatus.CONFIRMED).toList();
+        for(Reservation reservation : reservationsConfirm){
+            revenuTotal = revenuTotal.add(reservation.getTotalPrice());
+        }
+
+        System.out.println("réservations totales : "+totaleReservation);
+        System.out.println("réservations annulées : "+annuleReservation);
+        System.out.println("revenu total : "+revenuTotal);
+
+    }
+
+    public  void RoomPlusReserver(){
+        List<Reservation> reservations =  this.repo.findAll();
+        HashMap<String , Integer> roomsReserve = new HashMap<>();
+
+        for(Reservation reservation : reservations) {
+            if(!roomsReserve.containsKey(reservation.getRoomNumber())){
+                roomsReserve.put(reservation.getRoomNumber(),1);
+            }else{
+                roomsReserve.put(reservation.getRoomNumber(),roomsReserve.get(reservation.getRoomNumber()) + 1);
+            }
+        }
+        String numberRoom =  this.getRoomPlusReserver(roomsReserve);
+
+        if (numberRoom == null) {
+            System.out.println("Aucune réservation trouvée");
+            return;
+        }
+
+        try{
+          Room room = this.roomService.findRoom(numberRoom);
+            System.out.println("=======================");
+            System.out.println("roomNumber : " + room.getRoomNumber());
+            System.out.println("capacity : " + room.getCapacity());
+            System.out.println("price : " + room.getPrice());
+            System.out.println("type : " + room.getType());
+            System.out.println("status : " + room.getStatus());
+            System.out.println("=======================");
+
+        }catch (RoomNotFoundException e){
+            System.out.println("Erreur : "+e.getMessage());
+        }
+    }
+
+    public String getRoomPlusReserver(HashMap<String ,Integer> rooms){
+        String  maxRoom = "";
+        int max = 0;
+        for(Map.Entry<String , Integer> room : rooms.entrySet()){
+            if( room.getValue() > max){
+                max = room.getValue();
+                maxRoom = room.getKey();
+            }
+        }
+        return maxRoom;
+    }
 
 }

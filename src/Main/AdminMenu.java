@@ -15,6 +15,8 @@ public class AdminMenu {
             System.out.println("5. Set room maintenance");
             System.out.println("6. View all reservations");
             System.out.println("7. View all clients");
+            System.out.println("8. statistiques ");
+            System.out.println("9. LogOut ");
             System.out.println("0. Exit");
 
             int choix = InputUtils.readInt("Entrer une Choix");
@@ -48,6 +50,14 @@ public class AdminMenu {
                 case 7:
                     AuthMenu.getAll();
                     break;
+
+                case 8 :
+                    ReservationMenu.statistiques();
+                    break;
+
+                case 9 :
+                    Main.Authservice.logOut();
+                    return;
 
                 case 0:
                     System.out.println("Good Day");

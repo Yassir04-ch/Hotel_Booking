@@ -59,14 +59,13 @@ public class ReservationMenu {
             System.out.println("Statut : " + reservation.getStatus());
             System.out.println("Date de création : " + reservation.getCreatedAt());
         }
-
-        sortReservation();
     }
 
     public static void sortReservation(){
         System.out.println("==== Trier mes réservations ===");
         System.out.println("1. Trier par date de création");
         System.out.println("2. Trier par date d'arrivée");
+        System.out.println("3. return");
 
         int choix = InputUtils.readInt("Entrer votre choix : ");
 
@@ -74,11 +73,11 @@ public class ReservationMenu {
             case 1:
                 userReservation(Main.ReservationService.sortReservationsByCreatedAt());
                 break;
-
             case 2:
                 userReservation(Main.ReservationService.sortReservationsByCheckIn());
                 break;
-
+            case 3:
+                return;
             default:
                 System.out.println("Choix invalide");
                 break;
@@ -100,32 +99,17 @@ public class ReservationMenu {
 
     public static void updateReservation(){
         try{
-            userReservation(
-                    Main.ReservationService.userReservation()
-            );
+            String reservationCode = InputUtils.readString("Entrer code de reservation");
 
-            String reservationCode =
-                    InputUtils.readString("Entrer code de reservation");
+            LocalDate checkIn = DateUtils.readDate("Entrer Date de départ ");
 
-            LocalDate checkIn =
-                    DateUtils.readDate("Entrer Date de départ ");
+            LocalDate checkout = DateUtils.readDate("Entrer Date d'arrivée ");
 
-            LocalDate checkout =
-                    DateUtils.readDate("Entrer Date d'arrivée ");
+            String roomNumber = InputUtils.readString("Entrer nombre de room");
 
-            String roomNumber =
-                    InputUtils.readString("Entrer nombre de room");
+            int numberGuest = InputUtils.readInt("Entrer nombre des persones");
 
-            int numberGuest =
-                    InputUtils.readInt("Entrer nombre des persones");
-
-            Main.ReservationService.updateReservation(
-                    reservationCode,
-                    roomNumber,
-                    checkIn,
-                    checkout,
-                    numberGuest
-            );
+            Main.ReservationService.updateReservation(reservationCode, roomNumber, checkIn, checkout, numberGuest);
 
         }catch (ReservationNotFoundException e){
             System.out.println("Erreur : "+e.getMessage());
@@ -136,6 +120,11 @@ public class ReservationMenu {
         }catch (RoomNotFoundException e){
             System.out.println("Erreur : "+e.getMessage());
         }
+    }
+
+    public static void statistiques(){
+        Main.ReservationService.reservationStatistique();
+        Main.ReservationService.RoomPlusReserver();
     }
 
 }
