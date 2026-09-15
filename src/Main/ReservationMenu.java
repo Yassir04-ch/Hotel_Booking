@@ -27,7 +27,7 @@ public class ReservationMenu {
 
             int numberOfGuests = InputUtils.readInt("Entrer numbre des persone ");
 
-            Main.ReservationService.createReservation(roomNumber, checkIn, checkout, numberOfGuests);
+            Main.reservationService.createReservation(roomNumber, checkIn, checkout, numberOfGuests);
 
         }catch (InvalidReservationDateException e){
             System.out.println("Erreur :" + e.getMessage());
@@ -71,10 +71,10 @@ public class ReservationMenu {
 
         switch (choix){
             case 1:
-                userReservation(Main.ReservationService.sortReservationsByCreatedAt());
+                userReservation(Main.reservationService.sortReservationsByCreatedAt());
                 break;
             case 2:
-                userReservation(Main.ReservationService.sortReservationsByCheckIn());
+                userReservation(Main.reservationService.sortReservationsByCheckIn());
                 break;
             case 3:
                 return;
@@ -86,11 +86,11 @@ public class ReservationMenu {
 
     public static void cancelReservation(){
         try{
-            userReservation(Main.ReservationService.userReservation());
+            userReservation(Main.reservationService.userReservation());
 
             String code = InputUtils.readString("Entrer code du Reservation");
 
-            Main.ReservationService.cancelReservation(code);
+            Main.reservationService.cancelReservation(code);
 
         }catch (ReservationNotFoundException e){
             System.out.println("Erreur : "+e.getMessage());
@@ -109,7 +109,7 @@ public class ReservationMenu {
 
             int numberGuest = InputUtils.readInt("Entrer nombre des persones");
 
-            Main.ReservationService.updateReservation(reservationCode, roomNumber, checkIn, checkout, numberGuest);
+            Main.reservationService.updateReservation(reservationCode, roomNumber, checkIn, checkout, numberGuest);
 
         }catch (ReservationNotFoundException e){
             System.out.println("Erreur : "+e.getMessage());
@@ -123,8 +123,8 @@ public class ReservationMenu {
     }
 
     public static void statistiques(){
-        Main.ReservationService.reservationStatistique();
-        Main.ReservationService.RoomPlusReserver();
+        Main.reservationService.reservationStatistique();
+        Main.reservationService.RoomPlusReserver();
     }
 
 }

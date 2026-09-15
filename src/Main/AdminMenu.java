@@ -44,7 +44,7 @@ public class AdminMenu {
                     break;
 
                 case 6:
-                    Main.ReservationService.getAll();
+                    Main.reservationService.getAll();
                     break;
 
                 case 7:
@@ -56,7 +56,7 @@ public class AdminMenu {
                     break;
 
                 case 9 :
-                    Main.Authservice.logOut();
+                    Main.authService.logOut();
                     return;
 
                 case 0:

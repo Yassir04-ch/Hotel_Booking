@@ -10,7 +10,7 @@ import utils.InputUtils;
 public class ProfileMenu {
 
     public static void menuProfile(){
-        Person user = Main.Authservice.getUserLogin();
+        Person user = Main.authService.getUserLogin();
         boolean ret = true;
         while (ret) {
 
@@ -45,7 +45,7 @@ public class ProfileMenu {
             String name = InputUtils.readString("Entrer  nom : ");
             String email = InputUtils.readString("Entrer  email : ");
             String phone = InputUtils.readString("Entrer phone  : ");
-            Main.Authservice.updateProfile(name, email, phone);
+            Main.authService.updateProfile(name, email, phone);
             System.out.println("Votre profile et modifier");
         }catch (IllegalArgumentException e){
             System.out.println("Erreur : " +e.getMessage());
@@ -58,7 +58,7 @@ public class ProfileMenu {
         try{
             String oldPassword = InputUtils.readString("Entrer votre Mode passe : ");
             String password = InputUtils.readString("Entrer neuveaux Mode passe : ");
-            Main.Authservice.UpdatePassword(password,oldPassword);
+            Main.authService.UpdatePassword(password,oldPassword);
 
         }catch (IllegalArgumentException e){
             System.out.println("Erreur : " + e.getMessage());

@@ -36,7 +36,7 @@ public class MenuPrincipale {
                     break;
 
                 case 4:
-                    ReservationMenu.userReservation(Main.ReservationService.userReservation());
+                    ReservationMenu.userReservation(Main.reservationService.userReservation());
                     ReservationMenu.sortReservation();
                     break;
 
@@ -55,7 +55,7 @@ public class MenuPrincipale {
                     ProfileMenu.menuProfile();
                     break;
                 case 9:
-                    Main.Authservice.logOut();
+                    Main.authService.logOut();
                     System.out.println("Logout");
                     return;
                 case 0:

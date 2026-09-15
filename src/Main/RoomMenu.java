@@ -18,13 +18,12 @@ public class RoomMenu {
 
         Room room2 = new Room("303", RoomType.DOUBLE, 2, new BigDecimal("800.00"), RoomStatus.AVAILABLE);
 
-        Main.RoomService.getRepo().save(room1);
-        Main.RoomService.getRepo().save(room2);
+        Main.roomService.getRepo().save(room1);
+        Main.roomService.getRepo().save(room2);
     }
 
     public static void afficherRooms(){
-        saveRoom();
-        List<Room> rooms = Main.RoomService.getAllRooms();
+        List<Room> rooms = Main.roomService.getAllRooms();
 
         if (rooms.isEmpty()){
             System.out.println("Aucune chambre disponible.");
@@ -44,7 +43,7 @@ public class RoomMenu {
 
     public static void afficherRoomsAvailable(){
         saveRoom();
-        List<Room> rooms = Main.RoomService.getAvailableRoom();
+        List<Room> rooms = Main.roomService.getAvailableRoom();
 
         if (rooms.isEmpty()){
             System.out.println("Aucune chambre disponible.");
@@ -68,7 +67,7 @@ public class RoomMenu {
 
             LocalDate checkout = DateUtils.readDate("Entrer Checkout ex (2026-09-15) : ");
 
-            List<Room> rooms = Main.ReservationService.roomAvailableDate(checkin , checkout);
+            List<Room> rooms = Main.reservationService.roomAvailableDate(checkin , checkout);
 
             for(Room room : rooms){
                 System.out.println("=======================");
@@ -91,8 +90,8 @@ public class RoomMenu {
     public static RoomType roomType(){
         System.out.println("type de room");
         System.out.println("1-SINGLE");
-        System.out.println("1-DOUBLE");
-        System.out.println("1-SUITE");
+        System.out.println("2-DOUBLE");
+        System.out.println("3-SUITE");
         int choix = InputUtils.readInt("Choose type : ");
         RoomType type;
         switch (choix) {
@@ -122,7 +121,7 @@ public class RoomMenu {
 
         RoomType type = roomType();
 
-        Main.RoomService.creetRoom(roomNumber,capacity,price,type);
+        Main.roomService.creetRoom(roomNumber,capacity,price,type);
 
     }
 
@@ -132,7 +131,7 @@ public class RoomMenu {
         BigDecimal price = InputUtils.readBigDecimal("Entrer Prix : ");
         RoomType type = roomType();
         try {
-                Main.RoomService.updateRoom(roomNumber,capacity,price,type);
+                Main.roomService.updateRoom(roomNumber,capacity,price,type);
 
                 System.out.println("Room crée");
         }catch (RoomNotFoundException e){
@@ -143,7 +142,7 @@ public class RoomMenu {
     public static void updateStatusAvailable(){
         String roomNumber = InputUtils.readString("Entrer room number : ");
         try {
-            Main.RoomService.updateStatusAvailable(roomNumber);
+            Main.roomService.updateStatusAvailable(roomNumber);
             System.out.println("status Update ");
         }catch (RoomNotFoundException | RoomUnavailableException e){
             System.out.println("Erreur : "+e.getMessage());
@@ -153,7 +152,7 @@ public class RoomMenu {
     public static void updateStatusMAINTENANCE(){
         String roomNumber = InputUtils.readString("Entrer room number : ");
         try {
-            Main.RoomService.updateStatusMAINTENANCE(roomNumber);
+            Main.roomService.updateStatusMAINTENANCE(roomNumber);
             System.out.println("status Update ");
         }catch (RoomNotFoundException | RoomUnavailableException e){
             System.out.println("Erreur : "+e.getMessage());
@@ -167,13 +166,13 @@ public class RoomMenu {
         int choix = InputUtils.readInt("Enter votre choix : ");
         switch (choix){
             case 1 :
-                Main.RoomService.filterParType(RoomType.SINGLE);
+                Main.roomService.filterParType(RoomType.SINGLE);
                 break;
             case 2:
-                Main.RoomService.filterParType(RoomType.DOUBLE);
+                Main.roomService.filterParType(RoomType.DOUBLE);
                 break;
             case 3:
-                Main.RoomService.filterParType(RoomType.SUITE);
+                Main.roomService.filterParType(RoomType.SUITE);
                 break;
             default:
                 System.out.println("choix Invalide");
@@ -183,12 +182,12 @@ public class RoomMenu {
 
     public static void  RoomParPrix(){
         BigDecimal prix = InputUtils.readBigDecimal("Entrer maximum prix : ");
-        Main.RoomService.filterParPrix(prix);
+        Main.roomService.filterParPrix(prix);
     }
 
     public static void RoomParCapacity(){
         int capacity = InputUtils.readInt("Entrer capacity : ");
-        Main.RoomService.filterCapacity(capacity);
+        Main.roomService.filterCapacity(capacity);
     }
 
     public static void filterRooms() {

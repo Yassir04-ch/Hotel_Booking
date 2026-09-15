@@ -25,7 +25,7 @@ public class AuthMenu {
             try {
                 String email = InputUtils.readString("Email : ");
                 String password = InputUtils.readString("Mode passe : ");
-                Main.Authservice.Login(email, password);
+                Main.authService.Login(email, password);
                 return;
             } catch (IllegalArgumentException e) {
                 System.out.println("Erreur : " + e.getMessage());
@@ -51,7 +51,7 @@ public class AuthMenu {
                 String email = InputUtils.readString("Email : ");
                 String password = InputUtils.readString("Mode passe : ");
 
-                Main.Authservice.Register(fullName, email, phone, password , "user");
+                Main.authService.Register(fullName, email, phone, password , "user");
 
                 System.out.println("Register réussi ");
                 return;
@@ -67,7 +67,7 @@ public class AuthMenu {
     }
 
     public static void getAll(){
-       List<Person> users = Main.Authservice.getAll();
+       List<Person> users = Main.authService.getAll();
        for(Person user : users){
            System.out.println("Nom : " + user.getFullName());
            System.out.println("Phone : " + user.getPhone());

@@ -10,16 +10,17 @@ import java.util.UUID;
 
 public class Main {
 
-    static AuthService Authservice;
-    static RoomService RoomService;
-    static ReservationService ReservationService;
+    static AuthService authService;
+    static RoomService roomService;
+    static ReservationService reservationService;
 
     public static void main(String[] args) {
 
-        Authservice = new AuthService();
-        RoomService = new RoomService();
-        ReservationService = new ReservationService(RoomService);
-        Authservice.Register("admin_prin" ,"admin@gmail.com","0987654321","admin123","admin");;
+        authService = new AuthService();
+        roomService = new RoomService();
+        reservationService = new ReservationService(roomService);
+        authService.Register("admin_prin" ,"admin@gmail.com","0987654321","admin123","admin");
+        RoomMenu.saveRoom();
         while(true) {
 
             int choix = AuthMenu.menuAuth();
